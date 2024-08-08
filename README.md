@@ -15,9 +15,7 @@ Cada diretório no repositório corresponde a uma lista de exercícios ou projet
 
 Para clonar este repositório e visualizar os trabalhos, utilize o seguinte comando:
 
-\`\`\`bash
 git clone https://github.com/guilhermedebrites/Grafos.git
-\`\`\`
 
 ## Contribuições
 
