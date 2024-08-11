@@ -161,5 +161,406 @@ int main() {
     return 0;
 }
 \end{lstlisting}
+\subsection{Pilha}
+A pilha encadeada utiliza a classe Celula para representar cada nó e a classe Pilha para gerenciar suas operações, seguindo o paradigma LIFO (Last In First Out).
 
+Na pilha, cada nó contém um elemento e uma referência para o próximo nó. A classe Pilha mantém uma referência ao topo da pilha, permitindo as seguintes operações principais:
+
+Empilhar (inserir): Adiciona um novo elemento ao topo da pilha, com complexidade O(1).
+
+Desempilhar (remover): Remove o elemento do topo, atualizando a referência do topo, também em O(1).
+
+Pesquisar: Verifica se um elemento está presente na pilha, percorrendo os nós a partir do topo.
+\lstset{language=C++}
+\begin{lstlisting}
+#include <iostream>
+#include <exception>
+
+class Pilha {
+public:
+    class Celula {
+    public:
+        int elemento;
+        Celula* prox;
+
+        Celula() : elemento(0), prox(nullptr) {}
+
+        Celula(int elemento) : elemento(elemento), prox(nullptr) {}
+    };
+
+private:
+    Celula* topo;
+
+public:
+    Pilha() : topo(nullptr) {}
+
+    void inserir(int x) {
+        Celula* tmp = new Celula(x);
+        tmp->prox = topo;
+        topo = tmp;
+    }
+
+    int remover() {
+        if (topo == nullptr) {
+            throw std::runtime_error("A pilha está vazia");
+        }
+        int removido = topo->elemento;
+        Celula* tmp = topo;
+        topo = topo->prox;
+        delete tmp;
+        return removido;
+    }
+
+    bool pesquisar(int x) {
+        bool resp = false;
+        for (Celula* i = topo; i != nullptr; i = i->prox) {
+            if (i->elemento == x) {
+                resp = true;
+                break;
+            }
+        }
+        return resp;
+    }
+
+    ~Pilha() {
+        while (topo != nullptr) {
+            Celula* tmp = topo;
+            topo = topo->prox;
+            delete tmp;
+        }
+    }
+};
+
+int main() {
+    Pilha pilha;
+    pilha.inserir(10);
+    pilha.inserir(20);
+    pilha.inserir(30);
+    pilha.inserir(40);
+    pilha.inserir(50);
+
+    bool resp = pilha.pesquisar(30);
+    std::cout << std::boolalpha << resp << std::endl;
+    int removido = pilha.remover();
+    std::cout << removido << std::endl;
+
+    return 0;
+}
+\end{lstlisting}
+\subsection{Fila Encadeada}
+A fila encadeada foi implementada utilizando a classe: no para representar os nós da fila e a classe Fila para gerenciar as operações da fila. A fila utiliza do paradigma FIFO (First In First Out), ou seja, as operações de inserção e remoção são equivalentes às de inserirFim e removerInicio da Lista Encadeada, com os nomes de "enfileira" e "remove".
+\lstset{language=C++}
+\begin{lstlisting}
+#include <stdlib.h>
+#include <iostream>
+
+class No
+{
+    public:
+    int data;
+    No *prox;
+
+    public:
+    No(int data)
+    {
+        this->data = data;
+        this->prox = nullptr;
+    }
+};
+
+class Fila 
+{
+
+    private:
+    No *primeiro;
+    No *ultimo;
+
+    public:
+    Fila()
+    {
+        this->primeiro = nullptr;
+        this->ultimo = nullptr;
+    }
+
+    void printFila()
+    {
+        for(No *i = primeiro; i != ultimo->prox; i= i->prox)
+        {
+            std::cout << i->data << " ";
+        }    
+    }
+
+    int tamanho()
+    {
+        int tamanho = 0;
+        for(No* i = primeiro; i != ultimo->prox; i = i->prox)
+        {
+            tamanho++;
+        }
+        return tamanho;
+    }
+
+    void enfileira(int data)
+    {
+        No *novo = new No(data);
+        if(primeiro == nullptr)
+        {
+            primeiro = novo;
+            ultimo = primeiro;
+        }
+
+        ultimo->prox = novo;
+        ultimo = ultimo->prox;
+        ultimo->prox = nullptr;
+
+        novo = nullptr;
+    }
+
+    bool busca(int valor)
+    {
+        bool resposta = false;
+        for(No* i = primeiro; i != ultimo->prox; i = i->prox)
+        {
+            if(i->data == valor)
+            {
+                resposta = true;
+            }
+        }
+        return resposta;
+    }
+
+    int remove()
+    {
+        No* i = primeiro;
+        int retorno = primeiro->data;
+        primeiro = primeiro->prox;
+        i->prox = nullptr;
+        
+        delete(i);
+        i = nullptr;
+        
+        return retorno;
+    }
+
+};
+
+using std::cout;
+using std::cin;
+using std::endl;
+
+int main() 
+{
+    Fila* fila = new Fila();
+
+    cout << "Inserindo na fila" << endl;
+    for(int i = 0; i < 4; i++)
+    {
+        cout << "Fila:" << endl;    
+        fila->enfileira(i);
+        fila->printFila();
+        cout << endl;
+    }
+
+    cout << "Buscando elemento específico: 2" << endl;
+    if(fila->busca(2))
+    {
+        cout << "Elemento encontrado!" << endl;
+    }
+    else
+    {
+        cout << "Elemento não encontrado" << endl;
+    }
+
+    cout << "Removendo da fila" << endl;
+
+    int retorno = fila->remove();
+    cout << "Elemento excluido: " << retorno << endl;
+
+    cout << "Fila: " << endl;
+
+    fila->printFila(); 
+
+    cout << endl << "Removendo da fila" << endl;
+
+    retorno = fila->remove();
+    cout << "Elemento excluido: " << retorno << endl;
+
+    cout << "Fila: " << endl;
+
+    fila->printFila();
+}
+\end{lstlisting}
+
+\subsection{Matriz de Inteiros}
+A matriz de inteiros foi implementada utilizando uma estrutura encadeada de células. Cada célula está conectada a suas células vizinhas: direita, esquerda, acima, abaixo. A matriz é gerenciada pela classe 'Matriz', que possui métodos para inserir, remover, pesquisar e imprimir. O construtor da classe 'Matriz' inicializa uma matriz de zeros com base no número especificado de linhas e colunas, estabelecendo as conexões entre células necessárias.
+
+\lstset{language=C++}
+\begin{lstlisting}
+#include <iostream>
+
+class Celula {
+public:
+    int valor;
+    Celula *direita, *abaixo, *acima, *esquerda;
+
+    Celula(int valor = 0) : valor(valor), direita(nullptr), abaixo(nullptr), acima(nullptr), esquerda(nullptr) {}
+};
+
+class Matriz {
+private:
+    Celula *inicio;
+    int linhas, colunas;
+
+    Celula *getCelula(int linha, int coluna) {
+        if (linha < 0 || linha >= linhas || coluna < 0 || coluna >= colunas) {
+            return nullptr;
+        }
+
+        Celula *aux = inicio;
+        for (int i = 0; i < linha; i++) {
+            aux = aux->abaixo;
+        }
+        for (int i = 0; i < coluna; i++) {
+            aux = aux->direita;
+        }
+        return aux;
+    }
+
+public:
+    // Construtor
+    Matriz(int linhas, int colunas) : linhas(linhas), colunas(colunas) {
+        inicio = new Celula(0);
+        Celula *aux = inicio;
+
+        for (int i = 1; i < colunas; i++) {
+            aux->direita = new Celula(0);
+            aux->direita->esquerda = aux;
+            aux = aux->direita;
+        }
+
+        aux = inicio;
+
+        for (int i = 1; i < linhas; i++) {
+            aux->abaixo = new Celula(0);
+            aux->abaixo->acima = aux;
+            aux = aux->abaixo;
+
+            Celula *aux2 = aux;
+
+            for (int j = 1; j < colunas; j++) {
+                aux2->direita = new Celula(0);
+                aux2->direita->esquerda = aux2;
+                aux2->direita->acima = aux2->acima->direita;
+                aux2->acima->direita->abaixo = aux2->direita;
+                aux2 = aux2->direita;
+            }
+        }
+    }
+
+    // Destrutor
+    ~Matriz() {
+        Celula* linhaAtual = inicio;
+        while (linhaAtual) {
+            Celula* celAtual = linhaAtual;
+            linhaAtual = linhaAtual->abaixo;
+            while (celAtual) {
+                Celula* temp = celAtual;
+                celAtual = celAtual->direita;
+                delete temp;
+            }
+        }
+    }
+
+    // Inserir
+    void inserir(int linha, int coluna, int valor) {
+        Celula *aux = getCelula(linha, coluna);
+        if (aux) {
+            aux->valor = valor;
+        } else {
+            std::cerr << "Indice fora dos limites" << std::endl;
+        }
+    }
+
+    // Pesquisar
+    bool contem(int valor) {
+        Celula *linhaAtual = inicio;
+        while (linhaAtual) {
+            Celula *celAtual = linhaAtual;
+            while (celAtual) {
+                if (celAtual->valor == valor) {
+                    return true;
+                }
+                celAtual = celAtual->direita;
+            }
+            linhaAtual = linhaAtual->abaixo;
+        }
+        return false;
+    }
+
+    // Remover
+    int remover(int linha, int coluna) {
+        Celula *aux = getCelula(linha, coluna);
+        if (aux) {
+            int valor = aux->valor;
+            aux->valor = 0;
+            return valor;
+        }
+        std::cerr << "Indice fora dos limites" << std::endl;
+        return 0;
+    }
+
+    // Imprimir Matriz
+    void imprimir() {
+        Celula *linhaAtual = inicio;
+        while (linhaAtual) {
+            Celula *celAtual = linhaAtual;
+            while (celAtual) {
+                std::cout << celAtual->valor << " ";
+                celAtual = celAtual->direita;
+            }
+            std::cout << std::endl;
+            linhaAtual = linhaAtual->abaixo;
+        }
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    int linhas = 3, colunas = 3;
+    Matriz matriz(linhas, colunas);
+
+    matriz.inserir(0, 0, 5);
+    matriz.inserir(1, 1, 10);
+    matriz.inserir(2, 2, 15);
+
+    std::cout << "INSERCAO:\n\n";
+    std::cout << "Matriz:" << std::endl;
+    matriz.imprimir();
+    std::cout << "----------------------------"<< std::endl;
+
+
+    std::cout << "PESQUISA:\n\n";
+    int target = 10;
+    if (matriz.contem(target)) {
+        std::cout << "O elemento " << target << " esta na matriz\n\n";
+    } else {
+        std::cout << "O elemento " << target << " nao esta na matriz\n\n";
+    }
+    std::cout << "----------------------------"<< std::endl;
+
+
+
+    std::cout << "REMOCAO:\n\n";
+    int removido = matriz.remover(1, 1);
+    std::cout << "Elemento removido: " << removido << std::endl << std::endl;
+
+    
+    std::cout << "Matriz:" << std::endl;
+    matriz.imprimir();
+    std::cout << "----------------------------"<< std::endl;
+
+    return 0;
+}
+
+\end{lstlisting}
 \end{document}
