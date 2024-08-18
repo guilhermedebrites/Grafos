@@ -1,0 +1,215 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+
+\title{Documentação de Código em C++ para Geração de Subgrafos}
+\author{João Madeira, João Lucas Curi, Guilherme Gomes de Brites, Gabriel Samarane}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+Este documento descreve a implementação em C++ de um algoritmo que gera todos os subgrafos possíveis de um grafo completo com \( n \) vértices. O código foi dividido em duas classes principais: \texttt{Arestas} e \texttt{Grafo}.
+
+\section{Classe \texttt{Arestas}}
+
+\texttt{Arestas} é uma classe que representa uma aresta entre dois vértices em um grafo. Ela possui os seguintes membros:
+
+\begin{itemize}
+    \item \texttt{int vertice1, vertice2}: Vértices conectados pela aresta.
+    \item \texttt{Arestas(int a, int b)}: Construtor que inicializa a aresta com dois vértices.
+    \item \texttt{std::string toString() const}: Retorna uma representação da aresta no formato \texttt{"(v1, v2)"}.
+\end{itemize}
+
+\section{Classe \texttt{Grafo}}
+
+\texttt{Grafo} é uma classe que representa um grafo completo com \( n \) vértices e permite a geração de seus subgrafos. Seus principais membros e funções são:
+
+\begin{itemize}
+    \item \texttt{int num\_vertices}: Número de vértices no grafo.
+    \item \texttt{std::vector<int> vertices}: Vetor que armazena os vértices do grafo.
+    \item \texttt{int num\_arestas}: Número total de arestas possíveis no grafo completo, calculado como \(\frac{n(n-1)}{2}\).
+    
+    \item \texttt{Grafo(int n)}: Construtor que inicializa o grafo com \( n \) vértices.
+    \item \texttt{int fatorial(int n)}: Função que calcula o fatorial de \( n \) recursivamente.
+    
+    \item \texttt{double getQuantidadeSubgrafos(int n, int p = 1, double resp = 0)}: Calcula a quantidade total de subgrafos possíveis em um grafo completo com \( n \) vértices, utilizando uma fórmula combinatória e recursão.
+
+    \item \textbf{\texttt{std::vector<std::vector<int>> getNVertices(std::vector<int> lst, int n):}} Gera todas as combinações possíveis de \( n \) elementos de um vetor \texttt{lst}. \\
+    Esta função é responsável por gerar combinações de tamanho \( n \) a partir de um conjunto de vértices fornecido. A função utiliza recursão para construir combinações de forma sistemática. A cada chamada recursiva, ela fixa um vértice e combina os outros possíveis vértices restantes, construindo todas as combinações de \( n \) elementos.
+    
+    \begin{itemize}
+        \item \textbf{Exemplo:} 
+        \begin{itemize}
+            \item \texttt{lst = \{1, 2, 3\}, n = 2} 
+            \item Saída: \texttt{\{\{1, 2\}, \{1, 3\}, \{2, 3\}\}} 
+        \end{itemize}
+        Esse exemplo mostra como a função gera todas as combinações possíveis de dois vértices a partir de um conjunto de três vértices.
+    \end{itemize}
+
+    \item \textbf{\texttt{std::vector<Arestas> gerarArestas(const std::vector<int>\& lista\_vertices):}} Gera todas as arestas possíveis entre os vértices fornecidos. \\
+    Esta função é utilizada para criar todas as arestas possíveis em um subgrafo, dadas as combinações de vértices fornecidas. Ela percorre o conjunto de vértices e cria uma aresta para cada par distinto de vértices (onde \( a < b \)).
+
+    \begin{itemize}
+        \item \textbf{Exemplo:} 
+        \begin{itemize}
+            \item \texttt{lista\_vertices = \{1, 2, 3\}} 
+            \item Saída: \texttt{\{\texttt{Arestas(1, 2)}, \texttt{Arestas(1, 3)}, \texttt{Arestas(2, 3)}\}} 
+        \end{itemize}
+        Aqui, para um conjunto de vértices \{1, 2, 3\}, a função retorna todas as arestas possíveis que conectam esses vértices.
+    \end{itemize}
+    
+    \item \textbf{\texttt{std::vector<std::string> iniciarSubgrafos(std::vector<int> vertices, int index, std::vector<std::string>\& subgrafos):}} Inicia a geração de subgrafos a partir dos subconjuntos de vértices. Trabalha de forma recursiva, iniciando pelos maiores subconjuntos. \\
+    Esta função é a principal responsável por organizar e iniciar o processo de geração de subgrafos. Ela começa pelos subconjuntos de tamanho máximo e, recursivamente, trabalha até os menores subconjuntos, garantindo que todos os possíveis subgrafos sejam considerados.
+
+    \begin{itemize}
+        \item \textbf{Lógica:} 
+        \begin{itemize}
+            \item A função começa gerando todas as combinações de \( n \) vértices usando a função \texttt{getNVertices}.
+            \item Para cada combinação de vértices, ela gera as arestas correspondentes utilizando a função \texttt{gerarArestas}.
+            \item Esses subgrafos gerados são armazenados na lista de subgrafos.
+            \item O processo continua recursivamente até que todos os tamanhos de subconjuntos sejam considerados.
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{\texttt{std::vector<std::string> getSubgrafos(std::vector<int> lista\_vertices):}} Gera todos os subgrafos possíveis para um conjunto de vértices. Cada subgrafo é representado por uma string contendo suas arestas e vértices. \\
+    Esta função lida com a geração dos subgrafos reais para um dado conjunto de vértices. Ela faz isso construindo strings que descrevem as arestas e os vértices do subgrafo. A função também organiza essas strings em subgrafos distintos, dependendo das combinações de vértices e arestas.
+
+    \begin{itemize}
+        \item \textbf{Detalhes:} 
+        \begin{itemize}
+            \item A função gera uma string representando um subgrafo a partir de combinações de arestas e vértices.
+            \item Para cada combinação, ela cria uma string no formato \texttt{"Arestas: \{...}, Vertices: \{...\}"}. Essas strings são armazenadas em um vetor de subgrafos.
+            \item A função também considera casos especiais, como subgrafos sem arestas, apenas vértices, ou subgrafos com todas as arestas possíveis.
+        \end{itemize}
+    \end{itemize}
+
+\end{itemize}
+
+\section{Função \texttt{main()}}
+A função \texttt{main()} serve como ponto de entrada para o programa:
+
+\begin{itemize}
+    \item Inicializa um grafo com 3 vértices.
+    \item Calcula a quantidade total de subgrafos possíveis.
+    \item Gera todos os subgrafos do grafo e imprime cada um deles.
+    \item Exibe a quantidade total de subgrafos gerados.
+\end{itemize}
+
+\section{Código Fonte Completo}
+\begin{lstlisting}[language=C++, basicstyle=\ttfamily\small, breaklines=true, keywordstyle=\color{blue}]
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <numeric>
+
+class Arestas {
+public:
+    int vertice1, vertice2;
+    Arestas(int a, int b) : vertice1(a), vertice2(b) {}
+    std::string toString() const {
+        return "(" + std::to_string(vertice1) + ", " + std::to_string(vertice2) + ")";
+    }
+};
+
+class Grafo {
+public:
+    int num_vertices;
+    std::vector<int> vertices;
+    int num_arestas;
+    Grafo(int n) : num_vertices(n), num_arestas((n * (n - 1)) / 2) {
+        for (int i = 1; i <= n; i++) {
+            vertices.push_back(i);
+        }
+    }
+
+    int fatorial(int n) {
+        return (n == 1 || n == 0) ? 1 : n * fatorial(n - 1);
+    }
+
+    double getQuantidadeSubgrafos(int n, int p = 1, double resp = 0) {
+        for (int k = 1; k <= n; k++) {
+            resp += (pow(2, k * (k - 1) / 2) * (fatorial(n) / (fatorial(k) * fatorial(n - k))));
+        }
+        return resp;
+    }
+
+    std::vector<std::vector<int>> getNVertices(std::vector<int> lst, int n) {
+        std::vector<std::vector<int>> combinacoes;
+        std::vector<int> indices(n, 1);
+        indices.resize(lst.size(), 0);
+        do {
+            std::vector<int> combinacao;
+            for (int i = 0; i < lst.size(); i++) {
+                if (indices[i]) combinacao.push_back(lst[i]);
+            }
+            combinacoes.push_back(combinacao);
+        } while (std::prev_permutation(indices.begin(), indices.end()));
+        return combinacoes;
+    }
+
+    std::vector<Arestas> gerarArestas(const std::vector<int>& lista_vertices) {
+        std::vector<Arestas> arestas;
+        for (size_t i = 0; i < lista_vertices.size(); ++i) {
+            for (size_t j = i + 1; j < lista_vertices.size(); ++j) {
+                arestas.push_back(Arestas(lista_vertices[i], lista_vertices[j]));
+            }
+        }
+        return arestas;
+    }
+
+    std::vector<std::string> iniciarSubgrafos(std::vector<int> vertices, int index, std::vector<std::string>& subgrafos) {
+        for (int i = index; i >= 1; i--) {
+            auto combinacoes = getNVertices(vertices, i);
+            for (auto& lista_vertices : combinacoes) {
+                auto arestas = gerarArestas(lista_vertices);
+                if (i > 2) {
+                    iniciarSubgrafos(lista_vertices, i - 1, subgrafos);
+                }
+                if (i == 2 && lista_vertices.size() > 1) {
+                    std::string subgrafo = "Arestas: {";
+                    for (auto& aresta : arestas) {
+                        subgrafo += aresta.toString() + ", ";
+                    }
+                    subgrafo = subgrafo.substr(0, subgrafo.size() - 2);
+                    subgrafo += "}, Vertices: {";
+                    for (auto& vertice : lista_vertices) {
+                        subgrafo += std::to_string(vertice) + ", ";
+                    }
+                    subgrafo = subgrafo.substr(0, subgrafo.size() - 2);
+                    subgrafo += "}";
+                    subgrafos.push_back(subgrafo);
+                }
+            }
+        }
+        return subgrafos;
+    }
+
+    std::vector<std::string> getSubgrafos(std::vector<int> lista_vertices) {
+        std::vector<std::string> subgrafos;
+        iniciarSubgrafos(lista_vertices, num_vertices, subgrafos);
+        return subgrafos;
+    }
+};
+
+int main() {
+    int n = 3;
+    Grafo a(n);
+    double b = a.getQuantidadeSubgrafos(n);
+    std::vector<std::string> subgrafos;
+    subgrafos = a.iniciarSubgrafos(a.vertices, a.num_vertices, subgrafos);
+    for (size_t index = 0; index < subgrafos.size(); index++) {
+        std::cout << "SUBGRAFO " << index + 1 << ":     " << subgrafos[index] << std::endl;
+        std::cout << std::endl;
+    }
+    std::cout << "Quantidade de subgrafos: " << b << std::endl;
+    return 0;
+}
+\end{lstlisting}
+
+\end{document}
