@@ -62,6 +62,10 @@ E = {"{(A, B)}"}
 - **Fecho Transitivo Direto**: O fecho transitivo direto de um vértice é o conjunto de vértices que podem ser alcançados a partir desse vértice.
 - **Base ou Raiz**: Vértice que só tem arestas de saída.
 - **Anti-Base ou Anti-Raiz**: Vértice que só tem arestas de entrada.
+- **Excentricidade**: A excentricidade de um vértice é a maior distância entre ele e o vértice mais distante.
+- **Diâmetro**: O diâmetro de um grafo é a maior excentricidade entre todos os vértices.
+- **Raio**: O raio de um grafo é a menor excentricidade entre todos os vértices.
+- **Centro**: O centro de um grafo é o conjunto de vértices que têm excentricidade igual ao raio.
 
 ### SubGrafos
 
@@ -83,7 +87,27 @@ Step by Step:
 - Se não houver pai para retroceder, escolha outro nó inicial se existir.
 - Caso não exista mais vértices para visitar, a busca termina.
 
+[Assista ao vídeo](https://www.youtube.com/watch?v=doH9o1sO-Cw&t=574s)
+
 ### Busca em Largura
+
+A estratégia seguida pela **Busca em Largura** é buscar o mais raso possível sempre que possível.
+
+Ela primeiro visita todos os adjacentes de um vértice, depois visita os adjacentes dos adjacentes e assim por diante.
+
+Muito boa para descobrir o melhor caminho entre dois vértices.
+
+Step by Step:
+- Defina um vértice inicial e marque-o como visitado.
+- Enfileire-O
+- Enquanto a fila não estiver vazia
+    - Desenfileire um vértice
+    - Para cada vértice adjacente não visitado
+        - Marque-o como visitado
+        - Enfileire-o
+- Repita de outro nó inicial se existir.
+
+[Assista ao vídeo](https://www.youtube.com/watch?v=RNJxSV3BmcI)
 
 ### Sequência de Vértices e Arestas
 
@@ -94,3 +118,17 @@ Step by Step:
 - **Path**: Walk em que tanto os vértices quanto as arestas não se repetem.
 
 - **Cycle**: Path em que o vértice inicial é o mesmo que o vértice final.
+
+### Classificação das arestas
+
+- **Aresta de Árvore (Tree Edge)**: É uma aresta que faz parte da árvore de busca em profundidade (DFS). Isso acontece quando um vértice é descoberto pela primeira vez ao seguir uma aresta.
+Exemplo: Se você parte do vértice A e visita B pela primeira vez, a aresta (A, B) é uma aresta de árvore.
+
+- **Aresta de Retorno (Back Edge)**: Essa aresta é utilizada para retornar a um vértice que já foi visitado durante a busca, criando um ciclo. Em termos de uma árvore de busca, é como "voltar no caminho" para um ancestral.
+Exemplo: Durante a busca em profundidade, você chegou em C e percebe que C está conectado a um vértice já visitado (por exemplo, A). Nesse caso, (C, A) é uma aresta de retorno.
+
+- **Aresta de Avanço (Forward Edge):**: Essa aresta não faz parte da árvore de busca, mas conecta um vértice a outro que já foi descoberto durante a busca em profundidade e é um descendente do vértice atual na árvore de busca.
+Exemplo: Se durante a busca você já visitou B e encontra uma aresta entre A e B (que é um descendente de A), a aresta (A, B) é uma aresta de avanço.
+
+- **Aresta de Cruzamento (Cross Edge)**: É uma aresta que conecta dois vértices de diferentes subárvores na árvore de busca ou conecta dois vértices dentro da mesma árvore, mas sem relação direta de ancestralidade.
+Exemplo: Se durante a busca você encontra uma aresta entre dois vértices já visitados, mas que estão em ramos diferentes da árvore de busca, como (C, D), essa é uma aresta de cruzamento.
