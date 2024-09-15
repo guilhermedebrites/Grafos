@@ -66,6 +66,8 @@ E = {"{(A, B)}"}
 - **Diâmetro**: O diâmetro de um grafo é a maior excentricidade entre todos os vértices.
 - **Raio**: O raio de um grafo é a menor excentricidade entre todos os vértices.
 - **Centro**: O centro de um grafo é o conjunto de vértices que têm excentricidade igual ao raio.
+- **Ponte**: Uma aresta cuja remoção aumenta o número de componentes conexos.
+- **Articulação**: Um vértice cuja remoção aumenta o número de componentes conexos.
 
 ### SubGrafos
 
@@ -132,3 +134,31 @@ Exemplo: Se durante a busca você já visitou B e encontra uma aresta entre A e 
 
 - **Aresta de Cruzamento (Cross Edge)**: É uma aresta que conecta dois vértices de diferentes subárvores na árvore de busca ou conecta dois vértices dentro da mesma árvore, mas sem relação direta de ancestralidade.
 Exemplo: Se durante a busca você encontra uma aresta entre dois vértices já visitados, mas que estão em ramos diferentes da árvore de busca, como (C, D), essa é uma aresta de cruzamento.
+
+### Cut-Set
+
+Um cut-set (ou conjunto de corte) em um grafo é um conjunto de arestas cujo removimento desconecta o grafo, ou seja, separa o grafo em dois ou mais componentes.
+
+- **Cut-Set**: Um conjunto de arestas tal que, ao remover essas arestas, o grafo se torna desconexo (ou seja, uma ou mais partes do grafo ficam separadas).
+- **Cut-Vertex**: Se uma única aresta no cut-set estiver conectada a um vértice, e a remoção dessa aresta e vértice causar a desconexão, esse vértice é chamado de cut-vertex (vértice de corte).
+
+### Ciclo-Eureliano
+
+Regras para a existência de um Ciclo Euleriano:
+ - **Grafo não-direcionado**:
+    Para que um Grafo tenha um ciclo euleriano, ele precisa ser conexo (exceto possivelmente pelos vértices isolados) e todos os vértices devem ter grau par.
+ - **Grafo direcionado**:
+    Para que um Grafo direcionado tenha um ciclo euleriano, ele precisa ser fortemente conexo (cada vértice é acessível a partir de qualquer outro vértice) e o grau de entrada deve ser igual ao grau de saída para todos os vértices.
+
+### Diferença entre Caminho Euleriano e Ciclo Euleriano:
+
+- **Caminho Euleriano**: É um caminho que percorre todas as arestas do grafo exatamente uma vez, mas não precisa ser fechado (não retorna ao ponto de partida).
+- **Ciclo Euleriano**: É um caminho que percorre todas as arestas do grafo exatamente uma vez e termina no mesmo vértice em que começou.
+
+### Isomorfismo
+
+Propriedades do Isomorfismo:
+    - **Mesma quantidade de vértices**: Os grafos isomorfos têm o mesmo número de vértices.
+    - **Mesma quantidade de arestas**: Eles também têm o mesmo número de arestas.
+    - **Mesmo grau dos vértices**: Os vértices correspondentes nos dois grafos têm o mesmo grau (número de arestas conectadas).
+    - **Estrutura de conexões preservada**: Mesmas relações de incidências entre os vértices.
