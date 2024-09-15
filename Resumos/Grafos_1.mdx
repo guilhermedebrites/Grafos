@@ -1,0 +1,96 @@
+### Grafos
+
+Existem dois tipos principais de Grafos e são eles:
+
+### Grafos Não-Direcionado
+<span>A -------- B</span>  
+Você pode ir de A para B e de B para A.
+
+V = {"{A, B}"}  
+E = {"{{A, B}}"}
+
+### Grafos Direcionado
+<span>A -------> B</span>  
+Você pode ir de A para B e não pode ir de B para A.
+
+V = {"{A, B}"}  
+E = {"{(A, B)}"}
+
+
+### Categoria de Grafos
+
+- **Grafo Nulo**: Um Grafo sem arestas.
+
+- **Grafo Simples**: Não possui loop e nem arestas paralelas.
+
+- **Multigrafo**: Possui arestas paralelas.
+
+- **Grafo Rotulado**: Possui rótulos nas arestas.
+
+- **Grafo Ponderado**: Possui pesos nas arestas.
+
+- **Grafo Completo**: Todos os vértices estão conectados.
+
+- **Grafo Associado**: Um grafo associado a outro possui os mesmos vértices e as mesmas relações.
+
+- **Grafo Regular**: Todos os vértices possuem o mesmo grau.
+
+- **Grafo Conexo**: Existe um caminho entre todos os vértices, logo a partir de um vértice pode-se chegar em qualquer outro.
+
+- **Grafo Bipartido**: Vértices podem ser divididos em dois conjuntos onde as arestas só podem ligar vértices de conjuntos diferentes.
+
+- **Grafo Transposto**: Dado um grafo G, seu grafo transposto é o mesmo com arestas invertidas.
+
+### Formúlas
+
+- **Número de Arestas de um Grafo Não-Direcionado**: n(n-1)/2 (n = número de vértices)
+- **Número de Arestas de um Grafo Direcionado**: n(n-1) (n = número de vértices)
+- **Número de Arestas necessárias para um Grafo Regular**: n * k / 2 (n = número de vértices, k = grau do grafo)
+- **Número de Arestas de um Grafo Bipartido Completo**: m * n (m = número de vértices de um conjunto, n = número de vértices do outro conjunto)
+- **Número máximo de Arestas sabendo a quantidade de vérticies e componentes conexos**: (N-k+1)(n-k)/2 (N = número de vértices, k = número de componentes conexos)
+
+### Conceitos Básicos
+
+- **Vertice Adjacente**: Dois vértices são adjacentes se eles são conectados por uma aresta.
+- **Vértice Isolado**: Um vértice isolado é um vértice que não possui arestas conectadas a ele.
+- **Vértice Pendente**: Um vértice pendente é um vértice que possui apenas uma aresta conectada a ele.
+- **Aresta Paralela**: Duas arestas são paralelas se elas conectam os mesmos vértices.
+- **Loop**: Um loop é uma aresta que conecta um vértice a ele mesmo.
+- **Grau de um Vértice**: O grau de um vértice é o número de arestas conectadas a ele.
+- **Grau de um Grafo**: O grau de um grafo é o maior grau de um vértice no grafo.
+- **Componente Conexo**: Um componente conexo é um subgrafo de um grafo onde todos os vértices estão conectados.
+- **Fecho Transitivo Direto**: O fecho transitivo direto de um vértice é o conjunto de vértices que podem ser alcançados a partir desse vértice.
+- **Base ou Raiz**: Vértice que só tem arestas de saída.
+- **Anti-Base ou Anti-Raiz**: Vértice que só tem arestas de entrada.
+
+### SubGrafos
+
+É um Grafo que possui um subconjunto de vértices e arestas de um Grafo original.
+
+- **Subgrafo Induzido**: Um subgrafo induzido é um subgrafo que contém todos os vértices de um subconjunto de vértices e todas as arestas que conectam esses vértices.
+
+### Busca em Profundidade
+
+Fazer **buscas** em um grafo significa seguir suas arestas sistematicamente, de modo a visitar seus vérticies.
+
+A estratégia seguida pela **Busca em Profundidade** é buscar o mais fundo possível sempre que possível.
+
+Step by Step:
+- Defina um vértice inicial e marque-o como visitado.
+- Enquanto este não for um nó objetivo ou final (nó cuja adjacencia já tenha sido toda visitada)
+- Selecione um vértice adjacente não visitado, visite-o e marque-o como visitado. 
+- Se não houver vértices adjacentes não visitados, retroceda um nível na árvore de busca.
+- Se não houver pai para retroceder, escolha outro nó inicial se existir.
+- Caso não exista mais vértices para visitar, a busca termina.
+
+### Busca em Largura
+
+### Sequência de Vértices e Arestas
+
+- **Walk**: Uma sequência de vértices e arestas que começa e termina em vértices.
+
+- **Trail**: Walk em que as arestas não se repetem, mas os vértices podem.
+
+- **Path**: Walk em que tanto os vértices quanto as arestas não se repetem.
+
+- **Cycle**: Path em que o vértice inicial é o mesmo que o vértice final.
