@@ -48,6 +48,7 @@ E = {"{(A, B)}"}
 - **Número de Arestas necessárias para um Grafo Regular**: n * k / 2 (n = número de vértices, k = grau do grafo)
 - **Número de Arestas de um Grafo Bipartido Completo**: m * n (m = número de vértices de um conjunto, n = número de vértices do outro conjunto)
 - **Número máximo de Arestas sabendo a quantidade de vérticies e componentes conexos**: (N-k+1)(n-k)/2 (N = número de vértices, k = número de componentes conexos)
+- **Número de SubGrafos de um Grafo**: Somatorio de p
 
 ### Conceitos Básicos
 
@@ -60,9 +61,10 @@ E = {"{(A, B)}"}
 - **Grau de um Grafo**: O grau de um grafo é o maior grau de um vértice no grafo.
 - **Componente Conexo**: Um componente conexo é um subgrafo de um grafo onde todos os vértices estão conectados.
 - **Fecho Transitivo Direto**: O fecho transitivo direto de um vértice é o conjunto de vértices que podem ser alcançados a partir desse vértice.
-- **Base ou Raiz**: Vértice que só tem arestas de saída.
-- **Anti-Base ou Anti-Raiz**: Vértice que só tem arestas de entrada.
+- **Base ou Raiz**:Conjunto de todos vértices que contém grau de entrada igual a 0.
+- **Anti-Base ou Anti-Raiz**: Conjunto de todos vértices que contém grau de saida igual a 0.
 - **Excentricidade**: A excentricidade de um vértice é a maior distância entre ele e o vértice mais distante.
+- **Distância**: A distância entre dois vértices é o número de arestas no caminho mais curto entre eles.
 - **Diâmetro**: O diâmetro de um grafo é a maior excentricidade entre todos os vértices.
 - **Raio**: O raio de um grafo é a menor excentricidade entre todos os vértices.
 - **Centro**: O centro de um grafo é o conjunto de vértices que têm excentricidade igual ao raio.
@@ -163,3 +165,79 @@ Propriedades do Isomorfismo:
 - **Mesma quantidade de arestas**: Eles também têm o mesmo número de arestas.
 - **Mesmo grau dos vértices**: Os vértices correspondentes nos dois grafos têm o mesmo grau (número de arestas conectadas).
 - **Estrutura de conexões preservada**: Mesmas relações de incidências entre os vértices.
+
+
+### Algoritmo para Classificar as Arestas
+
+1 - Iniciar um vetor cores e como valor padrão Branco e um vetor classificação.
+2 - Realizar uma busca em profundidade, a partir de um vértice de origem
+
+Busca em Profundidade -> Seguir suas arestas sistematicamente, sempre procurando o vértice mais profundo, as arestas são exploradas a partir
+do vértice mais recentemente descoberto que ainda tem arestas não visitadas.
+
+3 - Durante a busca, enquanto houver vértices adjacentes 
+    Se encontrado uma aresta (u, v) em que v é Branco, classificar aresta como aresta de árvore e marcar v como Azul
+    chamar metodo recursivamente passando v
+
+    Se encontrado uma aresta (u, v) em que v é azul, classificar aresta como aresta de retorno
+    Se encontrado uma aresta (u, v) em que v é vermelho, se o tempo de inicio de u < v classificar como aresta de avanço, caso o contrário, aresta de cruzamento
+
+4 - Caso não tenha mais vértices adjacentes, marcar V como vermelho 
+
+
+### Algoritmo para encontrar Base
+
+Base -> Conjunto de todos vértices que contém grau de entrada igual a 0.
+
+1 - Cada vértice v terá uma lista de adjacência de sucessores, que são todos os vértices adjacentes de v, com arestas saindo de v.
+
+2 - Realizar uma busca em profundidade, a partir de um vértice de origem
+
+Busca em Profundidade -> Seguir todas as arestas sistematicamente, utilizando uma estrutura de pilha, sempre procurando o vértice mais profundo, as arestas são exploradas a partir do vértice
+mais recentemente descoberto que ainda tem arestas não visitadas.
+
+3 - Durante a busca, enquanto houver vértices adjacentes:
+    Se encontrar uma aresta de retorno, contém um ciclo.
+
+4 - Para cada ciclo, comprimir os vértices do ciclo em um hiper-vértice.
+
+5 - Verificar lista de adjacência de sucessores, os vértices que não aparecem como sucessor, constituirao meu conjunto de bases.
+
+### Algoritmo pra encontrar Anti-Base
+
+Anti-Base -> Conjunto de todos vértices que contém grau de saida igual a 0.
+
+1 - Cada vértice v terá uma lista de adjacência de sucessores, que são todos os vértices adjacentes de v, com arestas saindo de v.
+
+2 - Realizar uma busca em profundidade, a partir de um vértice de origem
+
+Busca em Profundidade -> Seguir todas as arestas sistematicamente, utilizando uma estrutura de pilha, sempre procurando o vértice mais profundo, as arestas são exploradas a partir do vértice
+mais recentemente descoberto que ainda tem arestas não visitadas.
+
+3 - Durante a busca, enquanto houver vértices adjacentes:
+    Se encontrar uma aresta de retorno, contém um ciclo.
+
+4 - Para cada ciclo, comprimir os vértices do ciclo em um hiper-vértice.
+
+5 - Verificar lista de adjacência de sucessores, os vértices que não tiverem nenhum sucessor, constituirao meu conjunto de anti-bases.
+
+### Algoritmo para encontrar o Diametro
+
+1 - Iniciar um vetor distância, inicialize com valor padrão 0 e um vetor excentricidade.
+2 - Para cada vertice v, realizar uma busca em largura
+
+Busca em Largura -> Primeiro visita todos os adjacentes de um vertice depois os adjacentes dos adjacentes e assim por diante, utilizando uma estrutura de fila.
+
+3 - Durante a busca, para cada vértice adjacente u não visitado, atualize o vetor distância[u] = distância[v] + 1.
+4 - No vetor distância pegue o maior valor e guarde como a excentricidade de v, excentricidade[v] = maiorDistância, passe para o proximo vertice v.
+5 - No vetor excentricidade pegue o maior valor e esse será o Diametro do grafo.
+
+### Algoritmo para encontrar excentricidade
+
+1 - Iniciar um vetor distância, inicialize com valor padrão 0;
+2 - Para um vertice v, realizar uma busca em largura
+
+Busca em Largura -> Primeiro visita todos os adjacentes de um vertice depois os adjacentes dos adjacentes e assim por diante, utilizando uma estrutura de fila.
+
+3 - Durante a busca, para cada vértice adjacente u não visitado, atualize o vetor distância[u] = distância[v] + 1.
+4 - No vetor distância pegue o maior valor com isso teremos a excentricidade do vertice.
